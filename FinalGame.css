@@ -40,8 +40,24 @@ h1 {
 #west_player {
   right: 2px;
 }
-#human_cards {
+#human_cards, #north_cards, #west_cards, #east_cards {
   position: absolute;
+  color: white;
+  font-size: 20px;
+}
+#human_cards {
   bottom: 102px;
+  left: 100px;
+}
+#north_cards {
+  top: 100px;
+  left: 100px;
+}
+#west_cards {
+  top: 200px;
+  left: 100px;
+}
+#east_cards {
+  top: 300px;
   left: 100px;
 }

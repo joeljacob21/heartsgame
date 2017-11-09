@@ -109,8 +109,8 @@ var HeartsMatch = function (player_north, player_east, player_south, player_west
 
     player_north.setupMatch(this, Hearts.NORTH);
     player_east.setupMatch(this, Hearts.EAST);
-    player_south.setupMatch(this, Hearts.SOUTH);
     player_west.setupMatch(this, Hearts.WEST);
+    player_south.setupMatch(this, Hearts.SOUTH);
 
     this.registerGameSetupHandler = function(callback) {
       game_setup_handlers.push(callback);

@@ -25,12 +25,18 @@ var HumanPlayer = function (name, ui_div) {
         var temp = document.createTextNode(tempCard + " ");
         node.appendChild(temp);
         node.setAttribute("id", tempCard);
-
         document.getElementById("human_cards").appendChild(node);
         document.getElementById(tempCard).addEventListener("click", function(){ pass(element.getRank(), element.getSuit()); });
-
       })
     });
+
+    current_game.registerEventHandler(Hearts.TRICK_START_EVENT, function (e) {
+
+    })
+    current_game.registerEventHandler(Hearts.TRICK_CONTINUE_EVENT, function (e) {
+
+    })
+
 
 
   }
@@ -42,6 +48,7 @@ var HumanPlayer = function (name, ui_div) {
     if (cards.length == 3) {
       current_game.passCards(cards, player_key);
       repopulate();
+      cards = [];
     }
   }
 
@@ -59,13 +66,8 @@ var HumanPlayer = function (name, ui_div) {
       node.setAttribute("id", tempCard);
 
       document.getElementById("human_cards").appendChild(node);
-
-      if(current_game.getHand(player_key).getUnplayedCards(player_key).length == 0) { //figure out why it's not going to pass
-        document.getElementById(tempCard).addEventListener("click", function(){ pass(element.getRank(), element.getSuit())});
-      } else {
-        document.getElementById(tempCard).addEventListener("click", function(){ play(element.getRank(), element.getSuit())});
-      }
-    });
+      document.getElementById(tempCard).addEventListener("click", function(){ play(element.getRank(), element.getSuit())});
+    })
   }
 
   var play = function(rank, suit) {
