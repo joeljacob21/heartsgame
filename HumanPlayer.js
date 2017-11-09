@@ -31,10 +31,11 @@ var HumanPlayer = function (name, ui_div) {
     });
 
     current_game.registerEventHandler(Hearts.TRICK_COMPLETE_EVENT, function (e) {
-      if(e.getTrick().getWinner() == "South") {
-        alert("South");
-      }
-      document.getElementById("south_play").innerHTML = "";
+      //if(e.getTrick().getWinner() == "South") {
+      //  alert("South");
+      //}
+      //document.getElementById("south_play").innerHTML = "";
+
     })
     current_game.registerEventHandler(Hearts.TRICK_CONTINUE_EVENT, function (e) {
 
@@ -80,9 +81,7 @@ var HumanPlayer = function (name, ui_div) {
     } else {
       var playedCard = makeGraphicCard(card_to_play.getRank(), card_to_play.getSuit());
       document.getElementById("south_play").innerHTML = playedCard;
-
       repopulate();
-      console.log("2");
     }
   }
 

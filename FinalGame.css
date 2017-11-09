@@ -73,17 +73,20 @@ h1 {
 #north_play, #west_play, #east_play, #south_play {
   color: white;
   position: absolute;
-  top: 10px;
 }
 #north_play {
-  left: 5px;
+  left: 340px;
+  top: 110px;
 }
 #west_play {
-  left: 25px;
+  top: 350px;
+  left: 102px;
 }
 #east_play {
-  left: 45px;
+  top: 350px;
+  right: 102px;
 }
 #south_play {
-  left: 65px;
+  left: 340px;
+  bottom: 110px;
 }

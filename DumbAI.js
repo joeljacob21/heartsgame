@@ -6,6 +6,7 @@ var DumbAI = function (name) {
   var player_key = null;
   var id = null;
   var playedCardPos = null;
+  var playedCard = null;
 
   this.setupMatch = function (hearts_match, pos) {
     match = hearts_match;
@@ -39,8 +40,7 @@ var DumbAI = function (name) {
     current_game.registerEventHandler(Hearts.TRICK_START_EVENT, function (e) {
       if (e.getStartPos() == position) {
         var playable_cards = current_game.getHand(player_key).getPlayableCards(player_key);
-
-        var playedCard = makeGraphicCard(playable_cards[0].getRank(), playable_cards[0].getSuit());
+        playedCard = makeGraphicCard(playable_cards[0].getRank(), playable_cards[0].getSuit());
         document.getElementById(playedCardPos).innerHTML = playedCard;
 
         current_game.playCard(playable_cards[0], player_key);
@@ -52,20 +52,24 @@ var DumbAI = function (name) {
     current_game.registerEventHandler(Hearts.TRICK_CONTINUE_EVENT, function (e) {
       if (e.getNextPos() == position) {
         var playable_cards = current_game.getHand(player_key).getPlayableCards(player_key);
-
-        var playedCard = makeGraphicCard(playable_cards[0].getRank(), playable_cards[0].getSuit());
+        playedCard = makeGraphicCard(playable_cards[0].getRank(), playable_cards[0].getSuit());
         document.getElementById(playedCardPos).innerHTML = playedCard;
-
         current_game.playCard(playable_cards[0], player_key);
         var list = document.getElementById(id);
         list.removeChild(list.childNodes[0]);
       }
     });
     current_game.registerEventHandler(Hearts.TRICK_COMPLETE_EVENT, function (e) {
-      if(e.getTrick().getWinner() == position) {
-        alert(position);
+      //document.getElementById(playedCardPos).innerHTML = playedCard;
+      if(position == "West") {
+        alert(e.getTrick().getWinner());
+        document.getElementById("south_play").innerHTML = "";
+        document.getElementById("west_play").innerHTML = "";
+        document.getElementById("east_play").innerHTML = "";
+        document.getElementById("north_play").innerHTML = "";
       }
-      document.getElementById(playedCardPos).innerHTML = "";
+
+
     })
   }
   var makeGraphicCard = function(rank, suit) {
