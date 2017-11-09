@@ -40,12 +40,8 @@ var DumbAI = function (name) {
       if (e.getStartPos() == position) {
         var playable_cards = current_game.getHand(player_key).getPlayableCards(player_key);
 
-        var node = document.createElement("div");
         var playedCard = makeGraphicCard(playable_cards[0].getRank(), playable_cards[0].getSuit());
-        var temp = document.createTextNode(playedCard);
-        node.appendChild(temp);
-        node.setAttribute("id", playedCardPos);
-        
+        document.getElementById(playedCardPos).innerHTML = playedCard;
 
         current_game.playCard(playable_cards[0], player_key);
         var list = document.getElementById(id);
@@ -56,11 +52,21 @@ var DumbAI = function (name) {
     current_game.registerEventHandler(Hearts.TRICK_CONTINUE_EVENT, function (e) {
       if (e.getNextPos() == position) {
         var playable_cards = current_game.getHand(player_key).getPlayableCards(player_key);
+
+        var playedCard = makeGraphicCard(playable_cards[0].getRank(), playable_cards[0].getSuit());
+        document.getElementById(playedCardPos).innerHTML = playedCard;
+
         current_game.playCard(playable_cards[0], player_key);
         var list = document.getElementById(id);
         list.removeChild(list.childNodes[0]);
       }
     });
+    current_game.registerEventHandler(Hearts.TRICK_COMPLETE_EVENT, function (e) {
+      if(e.getTrick().getWinner() == position) {
+        alert(position);
+      }
+      document.getElementById(playedCardPos).innerHTML = "";
+    })
   }
   var makeGraphicCard = function(rank, suit) {
     if (suit == 0) {

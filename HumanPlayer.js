@@ -30,8 +30,11 @@ var HumanPlayer = function (name, ui_div) {
       })
     });
 
-    current_game.registerEventHandler(Hearts.TRICK_START_EVENT, function (e) {
-
+    current_game.registerEventHandler(Hearts.TRICK_COMPLETE_EVENT, function (e) {
+      if(e.getTrick().getWinner() == "South") {
+        alert("South");
+      }
+      document.getElementById("south_play").innerHTML = "";
     })
     current_game.registerEventHandler(Hearts.TRICK_CONTINUE_EVENT, function (e) {
 
@@ -75,7 +78,11 @@ var HumanPlayer = function (name, ui_div) {
     if (!current_game.playCard(card_to_play, player_key)) {
       alert("Attempt to play " + card_to_play.toString() + " failed!");
     } else {
+      var playedCard = makeGraphicCard(card_to_play.getRank(), card_to_play.getSuit());
+      document.getElementById("south_play").innerHTML = playedCard;
+
       repopulate();
+      console.log("2");
     }
   }
 

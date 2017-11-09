@@ -61,3 +61,29 @@ h1 {
   top: 300px;
   left: 100px;
 }
+#scoretitle {
+  text-align: left;
+  color: white;
+  float: left;
+}
+#scoreboard {
+  text-align: center;
+  color: white;
+}
+#north_play, #west_play, #east_play, #south_play {
+  color: white;
+  position: absolute;
+  top: 10px;
+}
+#north_play {
+  left: 5px;
+}
+#west_play {
+  left: 25px;
+}
+#east_play {
+  left: 45px;
+}
+#south_play {
+  left: 65px;
+}
