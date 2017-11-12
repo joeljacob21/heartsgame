@@ -7,6 +7,7 @@ var DumbAI = function (name) {
   var id = null;
   var playedCardPos = null;
   var playedCard = null;
+  var score = null;
 
   this.setupMatch = function (hearts_match, pos) {
     match = hearts_match;
@@ -61,13 +62,34 @@ var DumbAI = function (name) {
     });
     current_game.registerEventHandler(Hearts.TRICK_COMPLETE_EVENT, function (e) {
       //document.getElementById(playedCardPos).innerHTML = playedCard;
-      if(position == "West") {
-        alert(e.getTrick().getWinner());
+
+        if(e.getTrick().getWinner() == position && position == "North") {
+          alert("Pink has won! Click OK to start the next trick!");
+          if(e.getTrick().getPoints() > 0) {
+            score += e.getTrick().getPoints();
+            document.getElementById("north_score").innerHTML = "PINK: " + score;
+          }
+      }
+        else if(e.getTrick().getWinner() == position && position == "West") {
+          alert("Blue has won! Click OK to start the next trick!");
+          if(e.getTrick().getPoints() > 0) {
+            score += e.getTrick().getPoints();
+            document.getElementById("west_score").innerHTML = "BLUE: " + score;
+          }
+      }
+        else if(e.getTrick().getWinner() == position && position == "East") {
+          alert("Black has won! Click OK to start the next trick!");
+          if(e.getTrick().getPoints() > 0) {
+            score += e.getTrick().getPoints();
+            document.getElementById("east_score").innerHTML = "BLACK: " + score;
+          }
+      }
+
         document.getElementById("south_play").innerHTML = "";
         document.getElementById("west_play").innerHTML = "";
         document.getElementById("east_play").innerHTML = "";
         document.getElementById("north_play").innerHTML = "";
-      }
+
 
 
     })

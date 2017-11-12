@@ -3,9 +3,9 @@ body {
 }
 h1 {
   text-align: center;
-  font-family: sans-serif;
+  font-family: monospace;
   color: white;
-  font-size: 70px;
+  font-size: 80px;
 }
 #game_box {
   position: relative;
@@ -46,47 +46,64 @@ h1 {
   font-size: 20px;
 }
 #human_cards {
-  bottom: 102px;
-  left: 100px;
+  bottom: 100px;
+  left: 120px;
 }
 #north_cards {
   top: 100px;
-  left: 100px;
+  left: 190px;
 }
 #west_cards {
-  top: 200px;
-  left: 100px;
+  transform: rotate(90deg);
+  top: 300px;
+  left: 10px;
 }
 #east_cards {
+  transform: rotate(90deg);
   top: 300px;
-  left: 100px;
+  right: 10px;
+}
+#scoretitle, #scoreboard {
+  position: absolute;
+  color: white;
+  font-family: monospace;
 }
 #scoretitle {
-  text-align: left;
-  color: white;
+  font-size: 50px;
+  top: 140px;
   float: left;
 }
 #scoreboard {
-  text-align: center;
-  color: white;
+  font-size: 30px;
+  padding-left: 0px;
+  top: 240px;
 }
 #north_play, #west_play, #east_play, #south_play {
+  font-size: 30px;
   color: white;
   position: absolute;
 }
 #north_play {
   left: 340px;
-  top: 110px;
+  top: 300px;
 }
 #west_play {
-  top: 350px;
-  left: 102px;
+  top: 330px;
+  left: 300px;
 }
 #east_play {
-  top: 350px;
-  right: 102px;
+  top: 330px;
+  right: 280px;
 }
 #south_play {
-  left: 340px;
-  bottom: 110px;
+  left: 338px;
+  bottom: 300px;
+}
+#directions {
+  text-align: center;
+  position: relative;
+  top: 520px;
+  color: white;
+  font-family: monospace;
+  font-size: 15px;
 }

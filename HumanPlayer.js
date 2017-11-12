@@ -4,6 +4,7 @@ var HumanPlayer = function (name, ui_div) {
   var position = null;
   var current_game = null;
   var player_key = null;
+  var score = null;
 
   this.setupMatch = function (hearts_match, pos) {
     match = hearts_match;
@@ -19,6 +20,7 @@ var HumanPlayer = function (name, ui_div) {
     player_key = pkey;
 
     current_game.registerEventHandler(Hearts.GAME_STARTED_EVENT, function (e) {
+      document.getElementById("directions").innerHTML = "Your turn to pass! Click 3 cards that you'd like to pass. Any 3!";
       current_game.getHand(player_key).getUnplayedCards(player_key).forEach(function(element) {
         var node = document.createElement("il");
         var tempCard = makeGraphicCard(element.getRank(), element.getSuit());
@@ -30,15 +32,29 @@ var HumanPlayer = function (name, ui_div) {
       })
     });
 
-    current_game.registerEventHandler(Hearts.TRICK_COMPLETE_EVENT, function (e) {
-      //if(e.getTrick().getWinner() == "South") {
-      //  alert("South");
-      //}
-      //document.getElementById("south_play").innerHTML = "";
-
+    current_game.registerEventHandler(Hearts.TRICK_START_EVENT, function (e) {
+      if (e.getStartPos() == position) {
+        document.getElementById("directions").innerHTML = "Your turn to play! Click a card to play!";
+      }
     })
     current_game.registerEventHandler(Hearts.TRICK_CONTINUE_EVENT, function (e) {
+      if (e.getNextPos() == position) {
+        document.getElementById("directions").innerHTML = "Your turn to play! Click a card to play!";
+      }
+    })
+    current_game.registerEventHandler(Hearts.TRICK_COMPLETE_EVENT, function (e) {
+      if (e.getTrick().getWinner() == "South") {
+        alert("You won this trick! Click OK to start the next trick!");
+        if(e.getTrick().getPoints() > 0) {
+          score += e.getTrick().getPoints();
+          document.getElementById("south_score").innerHTML = "YOU: " + score;
+        }
 
+      }
+      document.getElementById("south_play").innerHTML = "";
+      document.getElementById("west_play").innerHTML = "";
+      document.getElementById("east_play").innerHTML = "";
+      document.getElementById("north_play").innerHTML = "";
     })
 
 
@@ -53,6 +69,7 @@ var HumanPlayer = function (name, ui_div) {
       current_game.passCards(cards, player_key);
       repopulate();
       cards = [];
+      document.getElementById("directions").innerHTML = "";
     }
   }
 
@@ -82,6 +99,7 @@ var HumanPlayer = function (name, ui_div) {
       var playedCard = makeGraphicCard(card_to_play.getRank(), card_to_play.getSuit());
       document.getElementById("south_play").innerHTML = playedCard;
       repopulate();
+      document.getElementById("directions").innerHTML = "";
     }
   }
 
