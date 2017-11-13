@@ -50,17 +50,18 @@ h1 {
   left: 120px;
 }
 #north_cards {
+  color: pink;
   top: 100px;
   left: 190px;
 }
 #west_cards {
-  transform: rotate(90deg);
-  top: 300px;
-  left: 10px;
+  color: blue;
+  top: 400px;
+  left: 0px;
 }
 #east_cards {
-  transform: rotate(90deg);
-  top: 300px;
+  color: black;
+  top: 230px;
   right: 10px;
 }
 #scoretitle, #scoreboard {
@@ -106,4 +107,7 @@ h1 {
   color: white;
   font-family: monospace;
   font-size: 15px;
+}
+.playable {
+  color: red;
 }

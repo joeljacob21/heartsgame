@@ -5,6 +5,8 @@ var HumanPlayer = function (name, ui_div) {
   var current_game = null;
   var player_key = null;
   var score = null;
+  var boardScore = 0;
+  //var gameNum = 0;
 
   this.setupMatch = function (hearts_match, pos) {
     match = hearts_match;
@@ -20,46 +22,76 @@ var HumanPlayer = function (name, ui_div) {
     player_key = pkey;
 
     current_game.registerEventHandler(Hearts.GAME_STARTED_EVENT, function (e) {
-      document.getElementById("directions").innerHTML = "Your turn to pass! Click 3 cards that you'd like to pass. Any 3!";
-      current_game.getHand(player_key).getUnplayedCards(player_key).forEach(function(element) {
-        var node = document.createElement("il");
-        var tempCard = makeGraphicCard(element.getRank(), element.getSuit());
-        var temp = document.createTextNode(tempCard + " ");
-        node.appendChild(temp);
-        node.setAttribute("id", tempCard);
-        document.getElementById("human_cards").appendChild(node);
-        document.getElementById(tempCard).addEventListener("click", function(){ pass(element.getRank(), element.getSuit()); });
-      })
+      if(e.getPassType() != Hearts.PASS_NONE) {
+          document.getElementById("directions").innerHTML = "Your turn to pass! Click 3 cards that you'd like to pass. Any 3!";
+          current_game.getHand(player_key).getUnplayedCards(player_key).forEach(function(element) {
+            var node = document.createElement("il");
+            var tempCard = makeGraphicCard(element.getRank(), element.getSuit());
+            var temp = document.createTextNode(tempCard + " ");
+            node.appendChild(temp);
+            node.setAttribute("id", tempCard);
+            current_game.getHand(player_key).getPlayableCards(player_key).forEach(function(c) {
+              if(c.getRank() == element.getRank() && c.getSuit() == element.getSuit()) {
+                node.setAttribute("class", "playable");
+              }
+            });
+            document.getElementById("human_cards").appendChild(node);
+            document.getElementById(tempCard).addEventListener("click", function(){ pass(element.getRank(), element.getSuit()); });
+          })
+      } else {
+        console.log("was here");
+        repopulate();
+      }
+
+      //gameNum++;
     });
 
     current_game.registerEventHandler(Hearts.TRICK_START_EVENT, function (e) {
       if (e.getStartPos() == position) {
+        current_game.getHand(player_key).getUnplayedCards(player_key).forEach(function(element) {
+          current_game.getHand(player_key).getPlayableCards(player_key).forEach(function(c) {
+            var tempCard = makeGraphicCard(element.getRank(), element.getSuit());
+            if(c.getRank() == element.getRank() && c.getSuit() == element.getSuit()) {
+              document.getElementById(tempCard).setAttribute("class", "playable");
+            }
+          });
+        });
         document.getElementById("directions").innerHTML = "Your turn to play! Click a card to play!";
       }
     })
     current_game.registerEventHandler(Hearts.TRICK_CONTINUE_EVENT, function (e) {
       if (e.getNextPos() == position) {
+        current_game.getHand(player_key).getUnplayedCards(player_key).forEach(function(element) {
+          current_game.getHand(player_key).getPlayableCards(player_key).forEach(function(c) {
+            var tempCard = makeGraphicCard(element.getRank(), element.getSuit());
+            if(c.getRank() == element.getRank() && c.getSuit() == element.getSuit()) {
+              document.getElementById(tempCard).setAttribute("class", "playable");
+            }
+          });
+        });
         document.getElementById("directions").innerHTML = "Your turn to play! Click a card to play!";
       }
     })
     current_game.registerEventHandler(Hearts.TRICK_COMPLETE_EVENT, function (e) {
-      if (e.getTrick().getWinner() == "South") {
+      if(e.getTrick().getWinner() == "South") {
         alert("You won this trick! Click OK to start the next trick!");
         if(e.getTrick().getPoints() > 0) {
           score += e.getTrick().getPoints();
           document.getElementById("south_score").innerHTML = "YOU: " + score;
         }
-
       }
       document.getElementById("south_play").innerHTML = "";
       document.getElementById("west_play").innerHTML = "";
       document.getElementById("east_play").innerHTML = "";
       document.getElementById("north_play").innerHTML = "";
     })
-
-
-
+    current_game.registerEventHandler(Hearts.GAME_OVER_EVENT, function (e) {
+      boardScore += current_game.getScore(Hearts.SOUTH);
+      document.getElementById("south_score").innerHTML = "YOU: " + boardScore;
+      score = boardScore;
+    })
   }
+
 
   var cards = [];
 

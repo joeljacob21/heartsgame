@@ -8,13 +8,15 @@ var DumbAI = function (name) {
   var playedCardPos = null;
   var playedCard = null;
   var score = null;
+  var boardScore = 0;
+  var scorePos = null;
 
   this.setupMatch = function (hearts_match, pos) {
     match = hearts_match;
     position = pos;
-    if (position == Hearts.NORTH) { id = "north_cards"; playedCardPos = "north_play"; }
-    else if (position == Hearts.WEST) { id = "west_cards"; playedCardPos = "west_play"; }
-    else { id = "east_cards"; playedCardPos = "east_play"; }
+    if (position == Hearts.NORTH) { id = "north_cards"; playedCardPos = "north_play"; scorePos = "north_score"; }
+    else if (position == Hearts.WEST) { id = "west_cards"; playedCardPos = "west_play"; scorePos = "west_score"; }
+    else { id = "east_cards"; playedCardPos = "east_play"; scorePos = "east_score"; }
   }
 
   this.getName = function () {
@@ -26,14 +28,14 @@ var DumbAI = function (name) {
     player_key = pkey;
 
     current_game.registerEventHandler(Hearts.GAME_STARTED_EVENT, function (e) {
+      var cards = current_game.getHand(player_key).getDealtCards(player_key);
+      current_game.getHand(player_key).getUnplayedCards(player_key).forEach(function(element) {
+        var node = document.createElement("il");
+        var temp = document.createTextNode("O ");
+        node.appendChild(temp);
+        document.getElementById(id).appendChild(node);
+      });
       if (e.getPassType() != Hearts.PASS_NONE) {
-        var cards = current_game.getHand(player_key).getDealtCards(player_key);
-        current_game.getHand(player_key).getUnplayedCards(player_key).forEach(function(element){
-          var node = document.createElement("il");
-          var temp = document.createTextNode("O "); //will be face down card
-          node.appendChild(temp);
-          document.getElementById(id).appendChild(node);
-        });
         current_game.passCards(cards.splice(0,3), player_key);
       }
     });
@@ -61,8 +63,6 @@ var DumbAI = function (name) {
       }
     });
     current_game.registerEventHandler(Hearts.TRICK_COMPLETE_EVENT, function (e) {
-      //document.getElementById(playedCardPos).innerHTML = playedCard;
-
         if(e.getTrick().getWinner() == position && position == "North") {
           alert("Pink has won! Click OK to start the next trick!");
           if(e.getTrick().getPoints() > 0) {
@@ -92,6 +92,17 @@ var DumbAI = function (name) {
 
 
 
+    })
+    current_game.registerEventHandler(Hearts.GAME_OVER_EVENT, function (e) {
+      boardScore += current_game.getScore(position);
+      if(position == Hearts.NORTH) {
+        document.getElementById(scorePos).innerHTML = "PINK: " + boardScore;
+      } else if(position == Hearts.WEST) {
+        document.getElementById(scorePos).innerHTML = "BLUE: " + boardScore;
+      } else {
+        document.getElementById(scorePos).innerHTML = "BLACK: " + boardScore;
+      }
+      score = boardScore;
     })
   }
   var makeGraphicCard = function(rank, suit) {
